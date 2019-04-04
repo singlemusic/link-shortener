@@ -1,0 +1,69 @@
+version: '3'
+
+networks:
+  shortener-network:
+
+volumes:
+  shortener-mysql:
+
+services:
+  shortener-service:
+    image: link-shortener/shortener-service:latest
+    networks:
+      - shortener-network
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          cpus: '1'
+          memory: 256MB
+      restart_policy:
+        condition: on-failure
+        max_attempts: 10
+      labels:
+        - "traefik.port=80"
+        - "traefik.enable=true"
+        - "traefik.click.frontend.rule=Host:link-shortener;AddPrefix:/click"
+        - "traefik.api.frontend.rule=Host:localhost;PathPrefixStrip:/api/shortener/"
+        - "traefik.docker.network=shortener-network"
+    environment:
+      DB_HOST: shortener-mysql
+      SPRING_PROFILES_ACTIVE: dev
+  shortener-mysql:
+    image: link-shortener/shortener-mysql:latest
+    networks:
+      - shortener-network
+    volumes:
+      - "shortener-mysql:/var/lib/mysql"
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256MB
+      restart_policy:
+        condition: on-failure
+        max_attempts: 10
+  shortener-traefik:
+    image: link-shortener/shortener-traefik:latest
+    networks:
+      - shortener-network
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    ports:
+      - "80:80"
+      - "5001:8080"
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256MB
+      restart_policy:
+        condition: on-failure
+        max_attempts: 10
+    environment:
+      SWARM_MODE: 1

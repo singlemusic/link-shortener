@@ -1,0 +1,25 @@
+debug = false
+logLevel = "DEBUG"
+InsecureSkipVerify = true
+defaultEntryPoints = ["http"]
+
+[web]
+address = ":8080"
+
+[respondingTimeouts]
+idleTimeout = "180s"
+writeTimeout = "30m"
+readTimeout = "30m"
+
+[retry]
+attempts = 3
+
+[docker]
+domain = "localhost"
+exposedbydefault = false
+swarmmode = true
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+  compress = true
