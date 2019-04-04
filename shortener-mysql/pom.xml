@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.singlemusic</groupId>
+        <artifactId>link-shortener-parent</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../</relativePath>
+    </parent>
+
+    <artifactId>shortener-mysql</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <name>single-database-mysql</name>
+    <description>mysql</description>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${docker.plugin.version}</version>
+
+                <configuration>
+                    <images>
+                        <image>
+                            <name>link-shortener/shortener-mysql</name>
+                            <alias>${project.artifactId}</alias>
+                            <build>
+                                <dockerFileDir>${project.basedir}/docker/image</dockerFileDir>
+                                <tags>
+                                    <tag>latest</tag>
+                                </tags>
+                            </build>
+                            <run>
+                                <restartPolicy>
+                                    <name>on-failure</name>
+                                    <retry>10</retry>
+                                </restartPolicy>
+                                <namingStrategy>alias</namingStrategy>
+                                <volumes>
+                                    <bind>
+                                        <volume>${project.artifactId}:/var/lib/mysql</volume>
+                                    </bind>
+                                </volumes>
+                                <network>
+                                    <mode>custom</mode>
+                                    <name>${docker.network.name}</name>
+                                    <alias>${project.artifactId}</alias>
+                                </network>
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>docker-build</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <scm>
+        <connection>scm:git:${maven.scm.url}</connection>
+        <tag>${project.artifactId}-${project.version}</tag>
+    </scm>
+</project>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.singlemusic</groupId>
+        <artifactId>link-shortener-parent</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../</relativePath>
+    </parent>
+
+    <artifactId>shortener-traefik</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <name>shortener-traefik</name>
+    <description>traefik proxy</description>
+
+    <properties>
+        <traefik.config.path>/etc/traefik/local.toml</traefik.config.path>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${docker.plugin.version}</version>
+
+                <configuration>
+                    <images>
+                        <image>
+                            <name>link-shortener/shortener-traefik</name>
+                            <alias>${project.artifactId}</alias>
+                            <build>
+                                <dockerFileDir>${project.basedir}/docker/image</dockerFileDir>
+                                <tags>
+                                    <tag>latest</tag>
+                                </tags>
+                            </build>
+                            <run>
+                                <restartPolicy>
+                                    <name>always</name>
+                                </restartPolicy>
+                                <namingStrategy>alias</namingStrategy>
+                                <ports>
+                                    <port>80:80</port>
+                                    <port>5001:8080</port>
+                                </ports>
+                                <network>
+                                    <mode>custom</mode>
+                                    <name>${docker.network.name}</name>
+                                    <alias>${project.artifactId}</alias>
+                                </network>
+                                <volumes>
+                                    <bind>
+                                        <volume>/var/run/docker.sock:/var/run/docker.sock</volume>
+                                    </bind>
+                                </volumes>
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>docker-build</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <scm>
+        <connection>scm:git:${maven.scm.url}</connection>
+        <tag>${project.artifactId}-${project.version}</tag>
+    </scm>
+</project>
