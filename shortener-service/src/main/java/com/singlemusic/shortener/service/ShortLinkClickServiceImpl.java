@@ -7,6 +7,7 @@ import com.singlemusic.shortener.exception.ShortLinkNotFoundException;
 import com.singlemusic.shortener.repository.ShortLinkClickRepository;
 import com.singlemusic.shortener.repository.ShortLinkRepository;
 import com.singlemusic.shortener.util.SystemTimeFacade;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -62,7 +63,7 @@ public class ShortLinkClickServiceImpl implements ShortLinkClickService {
         click.setCreatedAt(systemTimeFacade.now());
         click.setLink(shortLink.getLink());
         click.setIpAddress(ipAddressParser.parse(request.getHeader("X-Forwarded-For")));
-        click.setReferrer(request.getHeader("Referer"));
+        click.setReferrer(StringUtils.truncate(request.getHeader("Referer"), 512));
         click.setUserAgent(request.getHeader("User-Agent"));
         return shortLinkClickRepository.save(click);
     }
