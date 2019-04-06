@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 
 @Component
-public class ShortLinkAdapter implements ApiAdapter<ShortLink, ShortLink> {
+public class ShortLinkAdapter implements ApiAdapter<com.singlemusic.shortener.controller.api.ShortLink, ShortLink> {
     @Resource
     private SystemTimeFacade systemTimeFacade;
     @Resource
@@ -20,11 +20,11 @@ public class ShortLinkAdapter implements ApiAdapter<ShortLink, ShortLink> {
     private SlugGenerator slugGenerator;
 
     @Override
-    public ShortLink toApi(ShortLink entity) {
+    public com.singlemusic.shortener.controller.api.ShortLink toApi(ShortLink entity) {
         if (null == entity) {
             return null;
         }
-        final ShortLink shortLink = new ShortLink();
+        final com.singlemusic.shortener.controller.api.ShortLink shortLink = new com.singlemusic.shortener.controller.api.ShortLink();
         shortLink.setId(entity.getId());
         shortLink.setLink(entity.getLink());
         shortLink.setSlug(entity.getSlug());
@@ -35,7 +35,7 @@ public class ShortLinkAdapter implements ApiAdapter<ShortLink, ShortLink> {
     }
 
     @Override
-    public ShortLink toEntity(ShortLink api) {
+    public ShortLink toEntity(com.singlemusic.shortener.controller.api.ShortLink api) {
         if (null == api) {
             return null;
         }
@@ -49,7 +49,7 @@ public class ShortLinkAdapter implements ApiAdapter<ShortLink, ShortLink> {
         return shortLink;
     }
 
-    private String getSlug(ShortLink api) {
+    private String getSlug(com.singlemusic.shortener.controller.api.ShortLink api) {
         if (StringUtils.isNotBlank(api.getSlug())) {
             return slugValidator.validate(api.getSlug());
         }
