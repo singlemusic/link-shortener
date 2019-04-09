@@ -67,3 +67,22 @@ services:
         max_attempts: 10
     environment:
       SWARM_MODE: 1
+  shortener-swagger-ui:
+    image: swaggerapi/swagger-ui
+    networks:
+      - shortener-network
+    ports:
+      - "5002:8080"
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 25MB
+      restart_policy:
+        condition: on-failure
+        max_attempts: 10
+    environment:
+      API_URL: http://localhost/api/shortener/v2/api-docs
+

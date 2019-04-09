@@ -6,6 +6,7 @@ import com.singlemusic.shortener.controller.api.ShortLinkClickCount;
 import com.singlemusic.shortener.controller.api.adapter.ApiAdapter;
 import com.singlemusic.shortener.service.ShortLinkClickService;
 import com.singlemusic.shortener.service.ShortLinkService;
+import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

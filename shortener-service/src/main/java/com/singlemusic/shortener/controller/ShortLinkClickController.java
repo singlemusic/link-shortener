@@ -3,6 +3,7 @@ package com.singlemusic.shortener.controller;
 import com.singlemusic.shortener.entity.ShortLink;
 import com.singlemusic.shortener.service.ShortLinkClickService;
 import com.singlemusic.shortener.service.ShortLinkService;
+import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
