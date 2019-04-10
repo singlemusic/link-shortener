@@ -117,6 +117,15 @@ The response contains a page of click data:
 }
 ```
 
+## API Documentation
+
+a running [swagger-ui](https://swagger.io/tools/swagger-ui/) 
+documentation service is included in the docker stack configuration.
+You can view it by visiting: http://localhost:5002/
+
+Exercise the API by utilizing the `Try it out` buttons in
+the documentation.
+
 ## Shutting Down
 
 To bring down the stack:

@@ -1,3 +1,20 @@
+/*
+    link-shortener
+    Copyright (C) 2019  Single LLC
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package com.singlemusic.shortener.controller;
 
 import com.singlemusic.shortener.controller.api.ShortLink;
@@ -6,12 +23,10 @@ import com.singlemusic.shortener.controller.api.ShortLinkClickCount;
 import com.singlemusic.shortener.controller.api.adapter.ApiAdapter;
 import com.singlemusic.shortener.service.ShortLinkClickService;
 import com.singlemusic.shortener.service.ShortLinkService;
-import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
