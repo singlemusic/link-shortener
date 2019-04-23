@@ -27,6 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -111,5 +112,11 @@ public class ShortLinkController {
     public ShortLink update(final @PathVariable("id") String id,
                             final @RequestBody ShortLink shortLink) {
         return shortLinkAdapter.toApi(shortLinkService.update(shortLinkAdapter.toEntity(shortLink)));
+    }
+
+    @RequestMapping(value = "/validate", method = RequestMethod.POST)
+    public ShortLink validate(final @RequestBody @Validated ShortLink shortLink) {
+        shortLinkService.validate(shortLinkAdapter.toEntity(shortLink));
+        return shortLink;
     }
 }

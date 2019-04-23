@@ -19,8 +19,10 @@ package com.singlemusic.shortener.service;
 
 import com.singlemusic.shortener.entity.ShortLink;
 import com.singlemusic.shortener.entity.enums.ShortLinkState;
+import com.singlemusic.shortener.exception.DuplicateSlugException;
 import com.singlemusic.shortener.exception.ShortLinkNotFoundException;
 import com.singlemusic.shortener.repository.ShortLinkRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -42,6 +44,7 @@ public class ShortLinkServiceImpl implements ShortLinkService {
 
     @Override
     public ShortLink create(final ShortLink shortLink) {
+        validate(shortLink);
         return shortLinkRepository.save(shortLink);
     }
 
@@ -68,11 +71,22 @@ public class ShortLinkServiceImpl implements ShortLinkService {
 
     @Override
     public ShortLink update(final ShortLink shortLink) {
+        validate(shortLink);
         final ShortLink loaded = shortLinkRepository.findById(shortLink.getId())
                 .orElseThrow(() -> new ShortLinkNotFoundException(shortLink.getId()));
         loaded.setLink(shortLink.getLink());
+        if (!StringUtils.equals(loaded.getSlug(), shortLink.getSlug())) {
+            validate(shortLink);
+        }
         loaded.setSlug(shortLink.getSlug());
         loaded.setTitle(shortLink.getTitle());
         return shortLinkRepository.save(loaded);
+    }
+
+    @Override
+    public void validate(ShortLink shortLink) {
+        if (null != shortLinkRepository.findOneBySlug(shortLink.getSlug())) {
+            throw new DuplicateSlugException(shortLink.getSlug());
+        }
     }
 }

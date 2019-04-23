@@ -35,4 +35,6 @@ public interface ShortLinkService {
     ShortLink getBySlug(String slug);
 
     ShortLink update(ShortLink shortLink);
+
+    void validate(ShortLink shortLink);
 }
