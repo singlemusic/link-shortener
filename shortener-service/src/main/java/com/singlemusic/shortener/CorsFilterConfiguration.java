@@ -23,7 +23,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class CorsFilterConfiguration {
     @Bean
     public CorsFilter corsFilter() {

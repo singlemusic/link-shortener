@@ -35,13 +35,15 @@ public class FlywayConfig {
 
     /**
      * This runs the flyway migrations against the database.
+     *
      * @return flyway - the flyway instance.
      */
     @Bean
     Flyway flyway() {
-        Flyway flyway = new Flyway();
-        flyway.setDataSource(dataSource);
-        flyway.setLocations("db/migration");
+        final Flyway flyway = Flyway.configure()
+                .dataSource(dataSource)
+                .locations("db/migration")
+                .load();
         flyway.migrate();
         return flyway;
     }

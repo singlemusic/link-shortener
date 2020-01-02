@@ -46,6 +46,7 @@ services:
         - "traefik.api.frontend.rule=Host:localhost;PathPrefixStrip:/api/shortener/"
         - "traefik.docker.network=shortener-network"
     environment:
+      JAVA_OPTS: -Duser.timezone=UTC
       DB_HOST: shortener-mysql
       SPRING_PROFILES_ACTIVE: dev
   shortener-mysql:

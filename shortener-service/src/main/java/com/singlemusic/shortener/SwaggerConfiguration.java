@@ -28,7 +28,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Set;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @EnableSwagger2
 @Profile("dev")
 public class SwaggerConfiguration {

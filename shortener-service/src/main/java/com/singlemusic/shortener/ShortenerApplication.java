@@ -31,7 +31,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import java.util.Collections;
 import java.util.List;
 
-@SpringBootApplication
+@SpringBootApplication(proxyBeanMethods = false)
 @EnableScheduling
 public class ShortenerApplication {
 
@@ -40,11 +40,10 @@ public class ShortenerApplication {
     }
 
     @Bean
-    MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
+    MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter(final ObjectMapper objectMapper) {
         MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
-        mappingJackson2HttpMessageConverter.setObjectMapper(objectMapper());
-        List<MediaType> mediaTypes = Collections.singletonList(MediaType.APPLICATION_JSON);
-        mappingJackson2HttpMessageConverter.setSupportedMediaTypes(mediaTypes);
+        mappingJackson2HttpMessageConverter.setObjectMapper(objectMapper);
+        mappingJackson2HttpMessageConverter.setSupportedMediaTypes(List.of(MediaType.APPLICATION_JSON));
         return mappingJackson2HttpMessageConverter;
     }
 
